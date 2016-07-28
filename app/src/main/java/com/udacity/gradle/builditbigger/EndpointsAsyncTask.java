@@ -3,14 +3,13 @@ package com.udacity.gradle.builditbigger;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v4.util.Pair;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
 
 import com.example.mauricio.myapplication.backend.myApi.MyApi;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
-import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
-import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 import com.hammerox.android.joketeller.JokeActivity;
 
 import java.io.IOException;
@@ -21,9 +20,13 @@ import java.io.IOException;
 class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
     private static MyApi myApiService = null;
     private Context context;
+    private Button button;
+    private ProgressBar loading;
 
-    public EndpointsAsyncTask(Context context) {
+    public EndpointsAsyncTask(Context context, View view) {
         this.context = context;
+        button = (Button) view.findViewById(R.id.joke_button);
+        loading = (ProgressBar) view.findViewById(R.id.progress_bar);
     }
 
     @Override
@@ -44,9 +47,19 @@ class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
     }
 
     @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        button.setVisibility(View.GONE);
+        loading.setVisibility(View.VISIBLE);
+    }
+
+    @Override
     protected void onPostExecute(String result) {
         Intent intent = new Intent(context, JokeActivity.class);
         intent.putExtra(JokeActivity.TAG_JOKE, result);
         context.startActivity(intent);
+
+        button.setVisibility(View.VISIBLE);
+        loading.setVisibility(View.GONE);
     }
 }
