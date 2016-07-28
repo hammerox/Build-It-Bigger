@@ -22,11 +22,18 @@ class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
     private Context context;
     private Button button;
     private ProgressBar loading;
+    private boolean containViews;
+
+    public EndpointsAsyncTask(Context context) {
+        this.context = context;
+        containViews = false;
+    }
 
     public EndpointsAsyncTask(Context context, View view) {
         this.context = context;
         button = (Button) view.findViewById(R.id.joke_button);
         loading = (ProgressBar) view.findViewById(R.id.progress_bar);
+        containViews = true;
     }
 
     @Override
@@ -49,8 +56,10 @@ class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        button.setVisibility(View.GONE);
-        loading.setVisibility(View.VISIBLE);
+        if (containViews) {
+            button.setVisibility(View.GONE);
+            loading.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -59,7 +68,9 @@ class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
         intent.putExtra(JokeActivity.TAG_JOKE, result);
         context.startActivity(intent);
 
-        button.setVisibility(View.VISIBLE);
-        loading.setVisibility(View.GONE);
+        if (containViews) {
+            button.setVisibility(View.VISIBLE);
+            loading.setVisibility(View.GONE);
+        }
     }
 }
