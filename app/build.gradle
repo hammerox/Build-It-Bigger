@@ -11,6 +11,7 @@ android {
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -32,10 +33,22 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     // Added for AdMob
+    compile 'com.android.support:appcompat-v7:23.1.0'
+    compile 'com.google.android.gms:play-services:9.2.1'
     compile project(':jokelibrary')
     compile project(':joketeller')
-    compile 'com.android.support:appcompat-v7:24.1.0'
-    compile 'com.google.android.gms:play-services:9.2.1'
     compile project(path: ':backend', configuration: 'android-endpoints')
     compile 'com.android.support:multidex:1.0.1'
+
+    androidTestCompile ('com.android.support.test:runner:0.4') {
+        exclude module: 'support-annotations'
+    }
+    androidTestCompile ('com.android.support.test:rules:0.4') {
+        exclude module: 'support-annotations'
+    }
+    androidTestCompile ('com.android.support.test.espresso:espresso-core:2.2.1') {
+        exclude module: 'jsr305'
+        exclude module: 'support-annotations'
+    }
+    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
 }
