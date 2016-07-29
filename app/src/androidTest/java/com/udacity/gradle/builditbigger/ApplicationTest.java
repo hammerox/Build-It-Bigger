@@ -7,6 +7,8 @@ import android.view.View;
 
 import org.junit.Test;
 
+import java.util.concurrent.ExecutionException;
+
 /**
  * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
  */
@@ -27,6 +29,15 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
     @Test
     public void testJokes() {
         EndpointsAsyncTask task = new EndpointsAsyncTask(mContext);
-        assertNotNull(task.execute());
+        String output = null;
+        try {
+            output = task.execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        assertNotNull(output);
     }
 }

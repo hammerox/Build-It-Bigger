@@ -1,5 +1,6 @@
 package com.udacity.gradle.builditbigger;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -64,9 +65,11 @@ class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
 
     @Override
     protected void onPostExecute(String result) {
-        Intent intent = new Intent(context, JokeActivity.class);
-        intent.putExtra(JokeActivity.TAG_JOKE, result);
-        context.startActivity(intent);
+        if (context instanceof Activity) {
+            Intent intent = new Intent(context, JokeActivity.class);
+            intent.putExtra(JokeActivity.TAG_JOKE, result);
+            context.startActivity(intent);
+        }
 
         if (containViews) {
             button.setVisibility(View.VISIBLE);
